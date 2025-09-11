@@ -1,4 +1,4 @@
+from .baseconfig import BaseAddonConfig, RequiredSecretsBase
 from .addonconfig import CustomAddonConfig
-from .baseconfig import BaseAddonConfig
 
-__all__ = ["BaseAddonConfig", "CustomAddonConfig"]
+__all__ = ["BaseAddonConfig", "RequiredSecretsBase", "CustomAddonConfig"]

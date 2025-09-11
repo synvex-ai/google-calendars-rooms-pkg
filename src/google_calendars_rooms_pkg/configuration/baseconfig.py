@@ -1,6 +1,9 @@
 from typing import Any
 from pydantic import BaseModel, Field
 
+class RequiredSecretsBase(BaseModel):
+    pass
+
 class BaseAddonConfig(BaseModel):
     id: str = Field(..., description="Unique identifier for the addon")
     type: str = Field(..., description="Type of the addon")
