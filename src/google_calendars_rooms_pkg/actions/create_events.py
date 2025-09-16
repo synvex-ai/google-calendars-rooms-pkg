@@ -64,6 +64,16 @@ def _coerce_dt(value: Union[datetime, str, None], name: str) -> Optional[datetim
         return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     raise TypeError(f"{name} must be datetime or ISO-8601 string")
 
+def _coerce_date(value: Union[date, str, None], name: str) -> Optional[date]:
+    """Accept date or 'YYYY-MM-DD' string, return a date object."""
+    if value is None:
+        return None
+    if isinstance(value, date) and not isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        return isoparse(value).date()
+    raise TypeError(f"{name} must be date or 'YYYY-MM-DD' string")
+
 def create_events(
     config: CustomAddonConfig,
     calendarId: str,
@@ -100,8 +110,16 @@ def create_events(
         logger.warning(msg)
         return ActionResponse(output=ActionOutput(data={"error": msg}), tokens=tokens, message=msg, code=400)
 
-    if  end_dt<= start_dt:
-        msg = "start_dt must be strictly after timeMin."
+    if (start_dt is not None and end_dt is not None) and end_dt <= start_dt:
+        msg = "end_dt must be strictly after start_dt."
+        logger.warning(msg)
+        return ActionResponse(output=ActionOutput(data={"error": msg}), tokens=tokens, message=msg, code=400)
+
+    try:
+        start_date = _coerce_date(start_date, "start_date")
+        end_date   = _coerce_date(end_date, "end_date")
+    except Exception as e:
+        msg = f"Invalid date format: {e}"
         logger.warning(msg)
         return ActionResponse(output=ActionOutput(data={"error": msg}), tokens=tokens, message=msg, code=400)
 
@@ -189,9 +207,6 @@ def create_events(
     if sendUpdates:
         params["sendUpdates"] = sendUpdates
 
-    # --- Secrets resolution (updated) ---
-    # Use the new secrets class to get the name of the secret key,
-    # then read the actual token value from config.secrets.
     required = config.get_required_secrets()
     secret_key_name = getattr(required, "google_calendars_api_key", "google_calendars_api_key")
     access_token = config.secrets.get(secret_key_name) or config.secrets.get("google_calendars_api_key")

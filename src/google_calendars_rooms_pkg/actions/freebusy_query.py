@@ -102,12 +102,19 @@ def freebusy_query(
         logger.warning(msg)
         return ActionResponse(output=ActionOutput(data={"error": msg}), tokens=tokens, message=msg, code=400)
 
-    credentials = CredentialsRegistry()
-    access_token = credentials.get("access_token") or config.secrets.get("access_token")
+    required = config.get_required_secrets()
+    secret_key_name = getattr(required, "google_calendars_api_key", "google_calendars_api_key")
+    access_token = config.secrets.get(secret_key_name) or config.secrets.get("google_calendars_api_key")
+
     if not access_token:
-        msg = "Missing access token for Google Calendar API"
-        logger.warning(msg)
-        return ActionResponse(output=ActionOutput(data={"error": msg}), tokens=tokens, message=msg, code=401)
+        msg = "Missing OAuth access_token in secrets."
+        logger.error(msg)
+        return ActionResponse(
+            output=ActionOutput(data={"error": msg}),
+            tokens=TokensSchema(stepAmount=0, totalCurrentAmount=0),
+            message=msg,
+            code=401,
+        )
 
     url = "https://www.googleapis.com/calendar/v3/freeBusy"
     headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}

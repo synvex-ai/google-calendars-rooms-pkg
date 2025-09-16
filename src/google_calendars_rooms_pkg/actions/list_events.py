@@ -74,10 +74,12 @@ def list_events(
 
     maxResults = maxResults or getattr(config, "default_max_results", 10)
 
-    credentials = CredentialsRegistry()
-    access_token = credentials.get("access_token") or getattr(config, "secrets", {}).get("access_token")
+    required = config.get_required_secrets()
+    secret_key_name = getattr(required, "google_calendars_api_key", "google_calendars_api_key")
+    access_token = config.secrets.get(secret_key_name) or config.secrets.get("google_calendars_api_key")
+
     if not access_token:
-        msg = "Missing OAuth access_token in credentials registry."
+        msg = "Missing OAuth access_token in secrets."
         logger.error(msg)
         return ActionResponse(
             output=ActionOutput(data={"error": msg}),
