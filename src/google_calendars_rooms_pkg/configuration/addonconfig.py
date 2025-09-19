@@ -1,4 +1,3 @@
-# FILE: addonconfig.py
 from typing import Annotated
 from pydantic import Field, model_validator, ConfigDict
 
