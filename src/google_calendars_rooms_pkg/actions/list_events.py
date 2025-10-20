@@ -1,15 +1,15 @@
-from typing import Optional, Union, Dict, Any
+from datetime import datetime, timezone
+from typing import Any, Dict, Optional, Union
 
+import requests
+from dateutil.parser import isoparse
 from loguru import logger
 from pydantic import BaseModel
 
 from google_calendars_rooms_pkg.configuration import CustomAddonConfig
-from google_calendars_rooms_pkg.services.credentials import CredentialsRegistry
+
 from .base import ActionResponse, OutputBase, TokensSchema
 
-import requests
-from datetime import datetime, timezone
-from dateutil.parser import isoparse
 
 class ActionInput(BaseModel):
     calendarId: str

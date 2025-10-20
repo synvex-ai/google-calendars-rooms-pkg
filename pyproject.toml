@@ -70,6 +70,10 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     "W191",  # indentation contains tabs
+    "UP006", # Use `list` instead of `List` - keep using typing.List
+    "UP007", # Use `X | Y` instead of `Union[X, Y]` - keep using Union
+    "UP035", # Use `list/dict` instead of `typing.List/Dict` - keep typing module
+    "UP045", # Use `X | None` instead of `Optional[X]` - keep using Optional
 ]
 per-file-ignores = {"__init__.py" = ["F401"], "tests/*" = ["F401", "F811"]}
 

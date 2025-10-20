@@ -1,5 +1,6 @@
 from typing import Annotated
-from pydantic import Field, model_validator, ConfigDict
+
+from pydantic import ConfigDict, Field, model_validator
 
 from .baseconfig import BaseAddonConfig, RequiredSecretsBase
 

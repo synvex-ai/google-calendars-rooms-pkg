@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 import pytest
-
 from template_rooms_pkg.services.credentials import CredentialsRegistry
 
 

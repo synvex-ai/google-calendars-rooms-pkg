@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from typing import Optional, List, Dict, Any, Literal, Annotated, Union
-from datetime import datetime, date, timezone
 import re
-import requests
+from datetime import date, datetime, timezone
+from typing import Annotated, Any, Dict, List, Literal, Optional, Union
 from uuid import uuid4
 
+import requests
+from dateutil.parser import isoparse
 from loguru import logger
 from pydantic import BaseModel, Field
 
 from google_calendars_rooms_pkg.configuration import CustomAddonConfig
-from google_calendars_rooms_pkg.services.credentials import CredentialsRegistry
+
 from .base import ActionResponse, OutputBase, TokensSchema
-from dateutil.parser import isoparse
 
 
 class ActionInput(BaseModel):

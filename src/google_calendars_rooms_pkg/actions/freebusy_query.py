@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-from typing import Optional, List, Dict, Any, Annotated, Union
 from datetime import datetime, timezone
-import requests
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
-from dateutil.parser import isoparse
+from typing import Annotated, Any, Dict, List, Optional, Union
 
+import requests
+from dateutil.parser import isoparse
 from loguru import logger
 from pydantic import BaseModel, Field
 
 from ..configuration import CustomAddonConfig
-from ..services.credentials import CredentialsRegistry
 from .base import ActionResponse, OutputBase, TokensSchema
+
 
 class ActionInput(BaseModel):
     timeMin: Union[datetime, str] = Field(..., description="Window start (datetime or ISO-8601 string)")

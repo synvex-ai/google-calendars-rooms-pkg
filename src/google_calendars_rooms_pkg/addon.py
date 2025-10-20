@@ -2,11 +2,12 @@ import importlib
 
 from loguru import logger
 
+from .actions.create_events import create_events
+from .actions.freebusy_query import freebusy_query
+from .actions.list_events import list_events
 from .services.credentials import CredentialsRegistry
 from .tools.base import ToolRegistry
-from .actions.list_events import list_events
-from .actions.freebusy_query import freebusy_query
-from .actions.create_events import create_events
+
 
 class GoogleCalendarsRoomsAddon:
     """
@@ -68,10 +69,10 @@ class GoogleCalendarsRoomsAddon:
     def list_events(self, calendarId: str = None, maxResults: int = None, timeMin: str = None, timeMax: str = None) -> dict:
         return list_events(self.config, calendarId=calendarId, maxResults=maxResults, timeMin=timeMin, timeMax=timeMax)
 
-    def create_events(self, calendarId=None, summary=None, start_dt=None, end_dt=None, start_date=None, end_date=None, description=None, location=None, attendees=None, colorId=None, sendUpdates=None, create_conference=False, reminders_overrides=None) -> dict: 
+    def create_events(self, calendarId=None, summary=None, start_dt=None, end_dt=None, start_date=None, end_date=None, description=None, location=None, attendees=None, colorId=None, sendUpdates=None, create_conference=False, reminders_overrides=None) -> dict:
         return create_events(self.config, calendarId=calendarId, summary=summary, start_dt=start_dt, end_dt=end_dt, start_date=start_date, end_date=end_date, description=description, location=location, attendees=attendees, colorId=colorId, sendUpdates=sendUpdates, create_conference=create_conference, reminders_overrides=reminders_overrides)
 
-    
+
     def freebusy_query(self, timeMin: str = None, timeMax: str = None, items: list = None, timeZone: str = None, calendarExpansionMax: int = None, groupExpansionMax: int = None) -> dict:
         return freebusy_query(self.config, timeMin=timeMin, timeMax=timeMax, items=items, timeZone=timeZone, calendarExpansionMax=calendarExpansionMax, groupExpansionMax=groupExpansionMax)
 
